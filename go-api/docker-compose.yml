@@ -1,0 +1,26 @@
+version: '3.7'
+
+services:
+  app:
+    container_name: go-auth-api
+    build:
+      context: .
+      dockerfile: docker/golang/Dockerfile
+    ports:
+      - 18080:18080
+    volumes:
+      - ./app:/go/src/app:cached
+    command: /bin/ash -c "while sleep 1000; do :; done"
+  db:
+    image: mysql:8.0
+    container_name: go-auth-api-db
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: auth
+      MYSQL_USER: test
+      MYSQL_PASSWORD: test
+    volumes:
+       - ./docker/db/data:/var/lib/mysql
+       - ./docker/db/my.cnf:/etc/mysql/conf.d/my.cnf
+    ports:
+      - 3306:13306
