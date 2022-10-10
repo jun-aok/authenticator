@@ -22,4 +22,4 @@ go.work
 
 docker/db/data
 
-cred/*
+app/cred/*
