@@ -31,3 +31,8 @@ RUN go install golang.org/x/tools/gopls@latest
 
 # RUN go install github.com/labstack/echo@latest
 RUN go get github.com/labstack/echo/v4
+RUN go get github.com/labstack/echo/v4/middleware
+RUN go get firebase.google.com/go/v4
+RUN go get github.com/go-sql-driver/mysql
+
+# ENV GOOGLE_APPLICATION_CREDENTIALS /go/src/app/cred/fire-base.json

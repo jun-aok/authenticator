@@ -71,7 +71,7 @@ namespace api
             });
 
             //Credential = Google.Apis.Auth.OAuth2.GoogleCredential.GetApplicationDefault()
-            var path = @"/Users/jun/workspace/practice/react-auth-4/api/cred/fire-base-test-7721f-firebase-adminsdk-s9aab-e2515f8f82.json";
+            var path = @"/Users/jun/workspace/practice/authenticator/api/cred/fire-base-test-7721f-firebase-adminsdk-s9aab-e2515f8f82.json";
             FirebaseApp.Create(new AppOptions() {
                 Credential = Google.Apis.Auth.OAuth2.GoogleCredential.FromFile(path)
             });

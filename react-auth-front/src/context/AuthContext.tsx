@@ -3,6 +3,7 @@ import { useHistory } from 'react-router-dom';
 import { Authenticator } from '../Authenticator'
 import { AuthedEntity } from '../models/entities/AuthedEntity';
 import { CurrentUserResponse } from '../models/responses/CurrentUserResponse';
+import moment from 'moment';
 import axios from 'axios';
 
 const AuthContext = createContext<null | AuthedEntity>(null);
@@ -19,11 +20,25 @@ export function AuthProvider({ children }: { children: any }) {
   useEffect(() => {
     // ログイン状態を監視
     const unsubscribed = Authenticator.getAuth().onAuthStateChanged(async (user) => {
-      axios.get('https://localhost:5001/api/user', { timeout: 3000 })
+      let token = Authenticator.getToken()
+      // ログインしていない
+      if(!user || token == null) {
+        setLoading(false);
+        return
+      }
+      axios.get('http://localhost:1323/user', { timeout: 3000 })
         .then(async res => {
-          console.log(res);
-          const currentUserRegistCompleted = res.data.value ? true : false;
-          const auther = user == null || user.email == null ? null : new AuthedEntity(user.email, await user.getIdToken(), currentUserRegistCompleted);
+          const currentUserRegistCompleted = res.data.user ? true : false;
+          const auther = new AuthedEntity(
+            user.email!, 
+            await user.getIdToken(), 
+            currentUserRegistCompleted
+          );
+          if (currentUserRegistCompleted) {
+            auther.name = res.data.user.Name;
+            auther.gender = res.data.user.Gender;
+            auther.birthDate = moment(res.data.user.BirthDate)
+          }
           setAuther(auther);
           setLoading(false);
         }).catch(err => {

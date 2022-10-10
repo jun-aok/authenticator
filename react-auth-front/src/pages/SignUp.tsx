@@ -6,7 +6,7 @@ import { useAuthContext } from '../context/AuthContext';
 
 const SignUp = () => {
   const [error, setError] = useState<string | null>(null);
-  const authedEntity: AuthedEntity | null = useAuthContext();
+  //const authedEntity: AuthedEntity | null = useAuthContext();
 
   const handleSubmit = async (event: any) => {
     event.preventDefault();

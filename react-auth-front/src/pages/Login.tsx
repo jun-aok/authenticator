@@ -2,21 +2,27 @@
 import { Link, Redirect } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { Authenticator } from '../Authenticator'
-import { useAuthContext } from '../context/AuthContext';
+//import { useDark } from '../context/AuthContext';
 import { AuthedEntity } from '../models/entities/AuthedEntity';
 
 
 const Login = () => {
   const [error, setError] = useState<string | null>(null);
-  const authedEntity: AuthedEntity | null = useAuthContext();
+  const [loggedIn, setLoggedIn] = useState<boolean>(false);
+  // const auther: AuthedEntity | null = useAuthContext();
 
   const handleSubmit = async (event: any) => {
     event.preventDefault();
     const { email, password } = event.target.elements;
     // サインインすればAuthContextのオブサーバーが動く
+    // トークンがなくなっていたら強制的にサインアウトする
+    // これをしないとIndexedDBを消さないと動かなくなる
+    Authenticator.signOut()
     var auth_complete = await Authenticator.signIn(email.value, password.value);
     if(auth_complete) {
-      setError(null);
+      // スマートじゃないけど<Redirect>だとAuthContextがそのままで正しく動かせない
+      // ログイン時にContextの値を更新できれば良いがやり方がいまいちわからず
+      window.location.href = '/'
     } else {
       setError('メールアドレスかパスワードが間違っています');
     }

@@ -11,6 +11,8 @@ services:
     volumes:
       - ./app:/go/src/app:cached
     command: /bin/ash -c "while sleep 1000; do :; done"
+    environment:
+      GOOGLE_APPLICATION_CREDENTIALS: /go/src/app/cred/fire-base.json
   db:
     image: mysql:8.0
     container_name: go-auth-api-db

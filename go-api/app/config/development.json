@@ -1,0 +1,3 @@
+{
+  "MySqlConnectionString": "test:test@tcp(go-auth-api-db)/auth?parseTime=true&loc=Asia%2FTokyo"
+}

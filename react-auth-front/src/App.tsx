@@ -4,7 +4,7 @@ import SignUp from './pages/SignUp';
 import Login from './pages/Login';
 import RegisterProfile from './pages/RegisterProfile';
 import { AuthProvider } from './context/AuthContext';
-import { BrowserRouter, Route } from 'react-router-dom';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import PrivateRoute from './components/PrivateRoute';
 import {} from './axios-middleware';
 import {} from './Authenticator';

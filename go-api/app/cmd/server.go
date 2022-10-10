@@ -1,22 +1,22 @@
-package main
+package cmd
 
 import (
-	"net/http"
+	controllers "app/internal/controller"
 
 	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v4/middleware"
 )
 
-func main() {
+func Server() {
 	// インスタンスを作成
 	e := echo.New()
+	e.Use(middleware.CORS())
 
 	// ルートを設定
-	e.GET("/", hello) // ローカル環境の場合、http://localhost:1323/ にGETアクセスされるとhelloハンドラーを実行する
+
+	e.GET("/user", controllers.GetUser)
+	e.POST("/user", controllers.RegistUser)
 
 	// サーバーをポート番号1323で起動
 	e.Logger.Fatal(e.Start(":1323"))
-}
-
-func hello(c echo.Context) error {
-	return c.String(http.StatusOK, "Hello, World!")
 }

@@ -1,13 +1,21 @@
 // import { auth } from '../firebase';
+import { useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Authenticator } from '../Authenticator'
+import { useAuthContext } from '../context/AuthContext';
 
 const Home = () => {
   const history = useHistory();
   const handleLogout = () => {
-    Authenticator.getAuth().signOut()
-    history.push('/login');
+    Authenticator.signOut();
+    window.location.href = '/login'
   };
+
+  const auther = useAuthContext();
+
+  useEffect(() => {
+    console.log(auther);
+  }, [])
 
   return (
     <div>

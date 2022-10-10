@@ -1,3 +1,4 @@
+import axios from 'axios';
 import firebase from 'firebase/compat/app'
 import 'firebase/compat/auth';
 import { AuthedEntity } from './models/entities/AuthedEntity';
@@ -56,20 +57,33 @@ export class Authenticator {
         return false;
       })
   }
-  public static signIn = (email: string, password: string): Promise<boolean | null> => {
+  public static signIn = (email: string, password: string): Promise<AuthedEntity | null> => {
     return Authenticator.getAuth().signInWithEmailAndPassword(email, password)
     .then(async (userCredential: firebase.auth.UserCredential) => {
       if(!userCredential.user) {
-        return false;
+        // 認証エラー
+        return null;
       }
+      // この段階でonAuthStateChangedの処理が走っているがそちらではuserにアクセスしないようにしている
       Authenticator.saveToken(await userCredential.user.getIdToken());
-      return true;
+      return axios.get('http://localhost:1323/user', { timeout: 3000 })
+        .then(async res => {
+          // todo
+          return new AuthedEntity(userCredential.user!.email!, await userCredential.user!.getIdToken(), false)
+        }).catch(err => {
+          // サーバーエラー
+          console.log(err);
+          return null;
+        });
     }).catch((error) => {
-      return false;
+      return null;
     });
   }
     
-  static signOut = (): Promise<void> => Authenticator.getAuth().signOut();
+  static signOut = () => {
+    localStorage.removeItem('jwt');
+    Authenticator.getAuth().signOut();
+  }
 
   static saveToken = (token: string): void => localStorage.setItem('jwt', token);
 }
