@@ -1,4 +1,4 @@
-import { Gender } from "../enum";
+import { Gender, getGenderView } from "../enums/gender";
 import moment from "moment"
 
 export class AuthedEntity {
@@ -39,6 +39,9 @@ export class AuthedEntity {
   set gender(gender: Gender | null) {
     this._gender = gender;
   }
+  get genderView(): string {
+    return getGenderView(this.gender)
+  }
 
   private _birthDate: moment.Moment | null;
   get birthDate(): moment.Moment | null {
@@ -46,5 +49,8 @@ export class AuthedEntity {
   }
   set birthDate(birthDate: moment.Moment | null) {
     this._birthDate = moment(birthDate)
+  }
+  get birthDateView(): string {
+    return this.birthDate?.format("YYYY-MM-DD") ?? ""
   }
 }

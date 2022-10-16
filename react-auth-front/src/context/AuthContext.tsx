@@ -2,7 +2,6 @@ import { createContext, useState, useContext, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Authenticator } from '../Authenticator'
 import { AuthedEntity } from '../models/entities/AuthedEntity';
-import { CurrentUserResponse } from '../models/responses/CurrentUserResponse';
 import moment from 'moment';
 import axios from 'axios';
 
@@ -42,6 +41,10 @@ export function AuthProvider({ children }: { children: any }) {
           setAuther(auther);
           setLoading(false);
         }).catch(err => {
+          if (err.response.status == 400) {
+            // トークンの期限切れ
+            Authenticator.signOut()
+          } 
           // ここ、エラー条件によってはサーバーダウンとか知らせる必要があるかも
           setLoading(false);
           console.log(err);
@@ -62,18 +65,3 @@ export function AuthProvider({ children }: { children: any }) {
     );
   }
 }
-
-// const currentUser = Auther.getAuth().currentUser
-    // if(currentUser != null) {
-    //   console.log(1);
-    //   // ログイン中
-    //   // expireしていたらrefresh
-    //   currentUser.getIdToken(true).then((idToken) => {
-    //     console.log(idToken);
-    //     if(idToken != Auther.getSavedToken()) {
-    //       Auther.saveToken(idToken);
-    //     }
-    //   }).catch((errorr) => {
-    //     console.log('tokenの更新失敗');
-    //   })
-    // }

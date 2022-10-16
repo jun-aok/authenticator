@@ -1,6 +1,6 @@
 // import { auth } from '../firebase';
 import { useEffect } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useHistory, Link } from 'react-router-dom';
 import { Authenticator } from '../Authenticator'
 import { useAuthContext } from '../context/AuthContext';
 
@@ -20,6 +20,7 @@ const Home = () => {
   return (
     <div>
       <h1>ホームページ</h1>
+      <h1><Link to="/mypage">マイページへ</Link></h1>
       <button onClick={handleLogout}>ログアウト</button>
     </div>
   );

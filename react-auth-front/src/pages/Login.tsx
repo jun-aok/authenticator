@@ -36,9 +36,6 @@ const Login = () => {
   return (
     <div>
       <h1>ログイン</h1>
-      <div>
-        <a onClick={handleFacebookLogin}>Facebookでログイン</a>
-      </div>
       <form onSubmit={handleSubmit}>
         <div>
           <label>メールアドレス</label>
